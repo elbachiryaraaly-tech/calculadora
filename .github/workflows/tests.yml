@@ -3,7 +3,7 @@ name: Java Tests con JUnit
 on:
   push:
     branches:
-      - '**'   # Se ejecuta en TODAS las ramas
+      - '**'
 
 jobs:
   test:
@@ -19,7 +19,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Compilar y ejecutar tests
+      - name: Instalar JUnit y compilar
         run: |
-          javac -cp .:junit.jar src/*.java src/test/*.java
-          java -cp .:junit.jar org.junit.runner.JUnitCore CalculadoraTest
+          wget -q https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar
+          wget -q https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+          javac -cp .:junit-4.13.2.jar Calculadora.java CalculadoraTest.java
+
+      - name: Ejecutar tests
+        run: |
+          java -cp .:junit-4.13.2.jar:hamcrest-core-1.3.jar org.junit.runner.JUnitCore CalculadoraTest
