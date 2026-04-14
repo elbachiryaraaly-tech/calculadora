@@ -1,0 +1,25 @@
+name: Java Tests con JUnit
+
+on:
+  push:
+    branches:
+      - '**'   # Se ejecuta en TODAS las ramas
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compilar y ejecutar tests
+        run: |
+          javac -cp .:junit.jar src/*.java src/test/*.java
+          java -cp .:junit.jar org.junit.runner.JUnitCore CalculadoraTest
